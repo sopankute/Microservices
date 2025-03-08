@@ -1,0 +1,12 @@
+
+server:
+  port: 8585
+spring:
+  application:
+    name: MicroservicesRegistry
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false   # this service shouldn't get self registered as client coz this Server 
+    fetch-registry: false         # this service shouldn't fetch eureka registry information
