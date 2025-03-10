@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
 //			Hotel hotel = forEntity.getBody();
 			
 //			Using Feign Client
+			System.out.println("UserServiceImpl.getUser()"+"|hotelServiceClient as Feign Client : "+hotelServiceClient);
 			Hotel hotel = hotelServiceClient.getHotel(rating.getHotelId());			
 			rating.setHotel(hotel);
 			
