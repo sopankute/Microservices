@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.userservice.entities.User;
 import com.userservice.services.UserService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+
 @RestController
 @RequestMapping("/users")
 //@RequiredArgsConstructor
@@ -36,12 +40,24 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
+//	@CircuitBreaker(name = "ratingServiceBreaker", fallbackMethod = "ratingServiceFallBack")
+//	@Retry(name = "ratingServiceRetry", fallbackMethod = "ratingServiceFallBack")
+	@RateLimiter(name = "userRateLimiter", fallbackMethod = "rateLimitFallback")
 	public ResponseEntity<User> getSingleUser(@PathVariable Integer userId) {
-
-		User user = userService.getUser(userId);
-
-		return new ResponseEntity<User>(user, HttpStatus.OK); // ************** return type
+		
+		User user = userService.getUser(userId);	// calling External services
+		return new ResponseEntity<User>(user, HttpStatus.OK); 
 	}
+	
+	
+	public ResponseEntity<User> rateLimitFallback(Integer userId, Exception ex){
+		
+		User user = User.builder().name("Dummy")
+						.email("dummy@gmail.com").city("Dummy")
+						.phoneNumber(null).build();
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
 
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUser() {

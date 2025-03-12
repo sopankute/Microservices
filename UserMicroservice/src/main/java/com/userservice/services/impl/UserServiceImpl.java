@@ -68,7 +68,8 @@ public class UserServiceImpl implements UserService {
 		List<Rating> ratingList = Arrays.stream(userRatings).toList();
 		
 		ratingList.stream().map(rating->{
-//			http://localhost:8081/hotels/6ee1ca20-b9f8-4c5d-8acd-255f65ad8e0a
+			
+//			http://HOTEL-SERVICE/hotels/6ee1ca20-b9f8-4c5d-8acd-255f65ad8e0a
 			
 //			By Using RestTemplate
 //			ResponseEntity<Hotel> forEntity = restTemplate.getForEntity("http://HOTEL-SERVICE/hotels/"+rating.getHotelId(), Hotel.class);
